@@ -1,0 +1,5 @@
+outs:
+- md5: 981ea066f9547e43c640ce65649ab3de
+  size: 10970218
+  hash: md5
+  path: mnist_train.csv

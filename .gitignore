@@ -1,0 +1,11 @@
+# Poetry
+poetry.lock
+
+# Python
+/mnist/models/__pycache__/
+
+# Program results
+/mnist/models/model.pth
+/data/prediction.csv
+/lightning_logs
+/outputs

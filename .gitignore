@@ -2,8 +2,9 @@
 poetry.lock
 
 # Python
-/mnist/models/__pycache__/
-
+*__pycache__/
+*.py[cod]
+*$py.class
 # Program results
 /mnist/models/model.pth
 /data/prediction.csv

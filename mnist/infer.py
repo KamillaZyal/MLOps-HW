@@ -3,31 +3,10 @@ from omegaconf import DictConfig
 import numpy as np
 import pandas as pd
 import torch
-# import torch.nn as nn
-# import torch.nn.functional as F
-# import torch.optim as optim
 import pytorch_lightning as pl
 from sklearn.metrics import classification_report
-# from dvc.api import DVCFileSystem
-# from torchvision.transforms import transforms
-# from models.dataset import MNISTDataset
 from models.model import LightMNISTClassifier
 from utils.utils import get_datasets,calculate_metrics
-
-
-# def get_datasets(path,n1,n2):
-#     fs = DVCFileSystem("./")
-#     fs.get_file(path, path)
-#     transform=transforms.Compose([transforms.ToTensor(),transforms.Normalize((n1,), (n2,))])
-#     return MNISTDataset(path, transform=transform)
-
-
-def calculate_metrics(y_true, y_pred):
-    """
-    Calculates metrics
-    """
-    clf_report = classification_report(y_true, y_pred, zero_division=0)
-    return clf_report
 
 @hydra.main(config_path="../configs", config_name="config",version_base="1.3")
 def main(cfg: DictConfig) -> None:

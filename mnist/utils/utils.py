@@ -1,6 +1,6 @@
 from sklearn.metrics import classification_report
 from dvc.api import DVCFileSystem
-from models.dataset import MNISTDataset
+from datasets.dataset import MNISTDataset
 from torchvision.transforms import transforms
 
 def get_datasets(path,n1,n2):

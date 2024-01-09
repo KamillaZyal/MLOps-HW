@@ -58,7 +58,7 @@ The `mnist_train.csv` file contains training examples and labels. The `mnist_tes
 cd my_dir
 git clone https://github.com/KamillaZyal/MLOps-HW.git
 virtualenv .
-\Scripts\activate.bat
+Scripts\activate
 poetry install
 pre-commit install
 pre-commit run -a

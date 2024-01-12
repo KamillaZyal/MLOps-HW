@@ -13,9 +13,12 @@ class LightMNISTClassifier(pl.LightningModule):
         super(LightMNISTClassifier, self).__init__()
         self.save_hyperparameters()
         self.cfg = cfg
-        self.loss_history = np.array([])
-        self.prediction = []
-        self.correct=[]
+        self.loss_history_train= np.array([])
+        self.prediction_train = []
+        self.correct_train=[]
+        self.loss_history_val= np.array([])
+        self.prediction_val = []
+        self.correct_val=[]
         self.conv1 = nn.Conv2d(self.cfg.model.in_channels, 32, 3, 1)
         self.bn1 = nn.BatchNorm2d(32)
         self.relu = nn.ReLU(inplace=True)
@@ -58,30 +61,69 @@ class LightMNISTClassifier(pl.LightningModule):
 
         pred = outputs.argmax(dim=1)
         acc = self.accuracy(pred, targets)
-        self.loss_history = np.append( self.loss_history, loss.detach().cpu().numpy())
-        self.prediction.extend(pred[:].detach().cpu().numpy())
-        self.correct.extend(targets[:].detach().cpu().numpy())
+        self.loss_history_train = np.append( self.loss_history_train, loss.detach().cpu().numpy())
+        self.prediction_train.extend(pred[:].detach().cpu().numpy())
+        self.correct_train.extend(targets[:].detach().cpu().numpy())
         #inbuilt logs
-        self.log("train_loss", loss, on_epoch=True)
-        self.log("acc", acc, on_epoch=True)
-        return {'loss':loss,'acc':acc}   
-    def predict_step(self, batch, batch_idx):
+        self.log("train_loss", loss,on_step=True, on_epoch=True)
+        self.log("train_acc", acc,on_step=True, on_epoch=True)
+        return {'loss':loss,'train_acc':acc}   
+    
+    def predict_step(self, batch, batch_idx, dataloader_idx=0):
         features, labels = batch
         preds = self(features)
         preds = preds.argmax(1)
         return np.stack((labels, preds))
+
     def on_train_epoch_end(self):
         # Print metrics for epoch
-        train_loss = self.loss_history.mean()
-        clf_report = classification_report(self.correct, self.prediction, zero_division=0)
+        # print('Конец тренировки')
+        train_loss = self.loss_history_train.mean()
+        clf_report = classification_report(self.correct_train, self.prediction_train, zero_division=0)
         print(f'Train loss: {train_loss}')
-        print(f'Accuracy: {accuracy_score(self.prediction,self.correct)}')
-        print('Classification report:')
+        print(f'Train accuracy: {accuracy_score(self.prediction_train,self.correct_train)}')
+        print('Classification report for train:')
         print(clf_report)
         # Clear the memory for the next epoch
-        self.loss_history=np.array([])
-        self.prediction.clear()
-        self.correct.clear()
+        self.loss_history_train=np.array([])
+        self.prediction_train.clear()
+        self.correct_train.clear()
+
+    def validation_step(self, batch, batch_idx, dataloader_idx= 0):
+        features, labels = batch
+        outputs = self(features)
+        loss = self.criterion(outputs, labels)
+        preds = outputs.argmax(1)
+        acc = self.accuracy(preds, labels)
+        self.log('val_loss', loss, on_step=True, on_epoch=True)
+        self.log('val_acc', acc, on_step=True, on_epoch=True)
+        self.loss_history_val = np.append(self.loss_history_val, loss.detach().cpu().numpy())
+        self.prediction_val.extend(preds[:].detach().cpu().numpy())
+        self.correct_val.extend(labels[:].detach().cpu().numpy())
+        return {'val_loss': loss,'val_acc': acc}
+    
+    def on_validation_epoch_end(self):
+        # Print metrics for epoch
+        val_loss = self.loss_history_val.mean()
+        # print('Конец валидации')
+        clf_report = classification_report(self.correct_val, self.prediction_val, zero_division=0)
+        print(f'Validation loss: {val_loss}')
+        print(f'Validation accuracy: {accuracy_score(self.prediction_val,self.correct_val)}')
+        print('Classification report for validation:')
+        print(clf_report)
+        # Clear the memory for the next epoch
+        self.loss_history_val=np.array([])
+        self.prediction_val.clear()
+        self.correct_val.clear()
+
+    def test_step(self, batch, batch_idx, dataloader_idx= 0):
+        features, labels = batch
+        pred = self(features)
+        loss = self.criterion(pred, labels)
+        acc = (pred.argmax(1) == labels).type(torch.float).sum().item() / labels.shape[0]
+        self.log("test_loss", loss, on_step=True, on_epoch=True)
+        self.log("test_correct", acc, on_step=True, on_epoch=True)
+        return {"test_loss": loss, "test_acc": acc, "preds": pred}
 
     def configure_optimizers(self):
         return torch.optim.SGD(self.parameters(), lr=self.cfg.training.learning_rate, momentum=self.cfg.training.momentum, nesterov=self.cfg.training.nesterov,weight_decay=self.cfg.training.weight_decay)

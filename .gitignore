@@ -10,3 +10,7 @@ poetry.lock
 /data/prediction.csv
 /lightning_logs
 /outputs
+/.venv
+/.lightning_logs
+/mlruns
+/server/outputs

@@ -74,6 +74,7 @@ mlflow server --host 127.0.0.1 --port 5000
 - Step 03: Create and activate virtaul environment (for example, using `virtualenv`)
 - Step 04: Run `poetry intsall`
 - Step 05: Run `pre-commint install` and `pre-commit run -a`
+- Step 06: Run Mlflow server (`mlflow server --host 127.0.0.1 --port 5000`)
 ## 🖥️ CLI
 #### Initial example for Windows
 ```
@@ -84,6 +85,7 @@ Scripts\activate
 poetry install
 pre-commit install
 pre-commit run -a
+mlflow server --host 127.0.0.1 --port 5000
 .\run_model.bat
 .\run_server.bat
 ```

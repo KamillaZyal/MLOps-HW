@@ -1,52 +1,23 @@
 import hydra
 from omegaconf import DictConfig
-# import numpy as np
-# import pandas as pd
-import pytorch_lightning as pl
 import torch
+import pytorch_lightning as pl
 from mnist.models.model import LightMNISTClassifier
-from mnist.datasets.dataset import MNISTDataModule
-from mnist.utils.utils import init_trainer
-from mnist.manage_dvc import dvc_push, dvc_pull
-
-def main_train(cfg):
-    dvc_pull()
-    pl.seed_everything(cfg.training.seed)
-    model = LightMNISTClassifier(cfg)
-    
-    trainer = init_trainer(cfg)
-
-    data_module = MNISTDataModule(val_size=cfg.training.val_size,
-                         batch_size=cfg.training.batch_size,
-                         num_workers=cfg.training.num_workers,
-                         n1=cfg.preprocessing.n1,
-                         n2=cfg.preprocessing.n2,
-                         path_train_val=cfg.data.train_data_path,
-                         path_test=cfg.data.test_data_path)
-    print('Training model...')
-    trainer.fit(model=model, datamodule=data_module)
-    torch.save(model.state_dict(), cfg.model.model_path+'.pth')
-    print(f"Model saved to {cfg.model.model_path}")
-
-    dummy_input_batch = next(iter(data_module.val_dataloader()))[0]
-    dummy_input = torch.unsqueeze(dummy_input_batch[0], 0)
-    torch.onnx.export(
-        model,
-        dummy_input,
-        cfg.model.model_path + ".onnx",
-        export_params=True,
-        input_names=["inputs"],
-        output_names=["predictions"],
-        dynamic_axes={
-            "inputs": {0: "BATCH_SIZE"},
-            "predictions": {0: "BATCH_SIZE"},
-        },
-    )
+from mnist.utils.utils import get_datasets
 
 @hydra.main(config_path="../configs", config_name="config",version_base="1.3")
 def main(cfg: DictConfig) -> None:
-    main_train(cfg)
-    dvc_push(cfg.dvc_data.list_data_path)
-    
+    train_data=get_datasets(cfg.data.train_data_path,cfg.preprocessing.n1,cfg.preprocessing.n2)
+    trainloader = torch.utils.data.DataLoader(train_data,
+                                              batch_size=cfg.training.batch_size,
+                                              shuffle=cfg.training.shuffle,
+                                              num_workers=cfg.training.num_workers)
+    model = LightMNISTClassifier(cfg)
+    trainer = pl.Trainer(max_epochs=cfg.training.epochs)
+    print('Training model...')
+    trainer.fit(model=model, train_dataloaders=trainloader)
+    torch.save(model.state_dict(), cfg.model.model_path)
+    print(f"Model saved to {cfg.model.model_path}")
+
 if __name__ == "__main__":
     main()

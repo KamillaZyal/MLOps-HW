@@ -16,8 +16,6 @@ The `mnist_train.csv` file contains training examples and labels. The `mnist_tes
 **If you are not using Windows, change .bat to the appropriate file extension.**
 - train model: `python train.py` or `poetry run python train.py` 
 - predict model: `python infer.py` or `poetry run python infer.py`
-- run server: './run_server.bat'
-
 ## 📁 Structure
 ```bash
   │                                     

@@ -12,3 +12,10 @@ poetry.lock
 /outputs
 /.venv
 /.lightning_logs
+/mlruns
+/server/outputs
+/logs
+/Scripts
+/share
+/Lib
+/include

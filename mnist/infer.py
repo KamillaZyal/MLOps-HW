@@ -17,7 +17,7 @@ def main(cfg: DictConfig) -> None:
     pl.seed_everything(cfg.infer.seed)
     model = LightMNISTClassifier(cfg)
     model_path=cfg.model.model_path+".pth"
-    if Path(model_path).exists()!=True:
+    if Path(model_path).exist()!=True:
         print('File .pth will be downloaded from the DVC')
         print('In other case: you need to run train.py and restart infer.py')
         get_data_dvc(model_path)

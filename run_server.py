@@ -15,7 +15,8 @@ from mnist.utils.utils import calculate_metrics, get_data_dvc
 @hydra.main(config_path="configs", config_name="config",version_base="1.3")
 def main(cfg: DictConfig) -> None:
     model_path = cfg.model.model_path+'.onnx'
-    if Path(model_path)!=True:
+    if Path(model_path).exists()!=True:
+        print()
         print('File .onnx will be downloaded from the DVC')
         print('In other case: you need to run train.py and restart run_server.py')
         get_data_dvc(model_path)

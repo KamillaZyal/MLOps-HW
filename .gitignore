@@ -12,12 +12,3 @@ poetry.lock
 /outputs
 /.venv
 /.lightning_logs
-/mlruns
-/mlartifacts
-/server/outputs
-/logs
-/Scripts
-/share
-/Lib
-pyvenv.cfg
-/include

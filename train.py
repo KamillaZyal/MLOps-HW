@@ -1,5 +1,4 @@
 from hydra import compose, initialize
-
 from mnist import train
 
 if __name__ == "__main__":

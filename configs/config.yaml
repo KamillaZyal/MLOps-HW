@@ -2,19 +2,14 @@ data:
   train_data_path: data/train/mnist_train.csv
   test_data_path: data/test/mnist_test.csv
   pred_data_path: data/prediction.csv
-  pred_onnx_data_path: data/prediction_onnx.csv
-  exp_data_path: data/examples/mnist_examples.csv
-  logs_path: logs/
-
 
 model:
-  model_path: mnist/models/model
+  model_path: mnist/models/model.pth
   in_channels: 1
   out_channels: 10
 preprocessing:
   n1: 0.1307
   n2: 0.3081
-
 training:
   batch_size: 32
   shuffle: True
@@ -24,49 +19,7 @@ training:
   momentum: 0.9
   nesterov: False
   weight_decay: 5e-4
-  val_size: 0.1
-  seed: 42
 infer:
   batch_size: 32
   shuffle: False
   num_workers: 2
-  seed: 42
-
-artifacts:
-    experiment_name: MNIST_prediction
-    checkpoint:
-        use: false
-        dirpath: checkpoints
-        filename: "{epoch:02d}-{val_loss:.4f}"
-        monitor: val_loss
-        save_top_k: 3
-        every_n_train_steps:
-        every_n_epochs: 1
-    mlflow:
-        tracking_uri:  'http://localhost:5000'
-        save_path: "file:./logs/mlflow-logs"
-
-callbacks:
-    model_summary:
-        max_depth: 1
-    swa:
-        use: false
-        lrs: 1e-3
-trainer:
-    learning_rate: 1e-3
-    num_warmup_steps: 200
-    num_training_steps: 4000
-    grad_accum_steps: 4
-    precision: 32-true
-    val_check_interval: 1.0
-    overfit_batches: 0.0
-    num_sanity_val_steps: 2
-    full_deterministic_mode: True
-    benchmark: False
-    gradient_clip_val: 1.0
-    profiler: None
-    log_every_n_steps: 50
-    batch_size_finder: False
-    detect_anomaly: False
-    accelerator: auto
-

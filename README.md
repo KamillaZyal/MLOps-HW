@@ -14,11 +14,11 @@ The dataset consists of two files:
 The `mnist_train.csv` file contains training examples and labels. The `mnist_test.csv` contains test examples and labels. Each row consists of 785 values: the first value is the label (a number from 0 to 9) and the remaining 784 values are the pixel values (a number from 0 to 255).
 ## ▶ Running Model
 **If you are not using Windows, change .bat to the appropriate file extension.**
-- train model: `python train.py` or `poetry run python train.py` 
+- train model: `python train.py` or `poetry run python train.py`
 - predict model: `python infer.py` or `poetry run python infer.py`
 ## 📁 Structure
 ```bash
-  │                                     
+  │
   ├───.dvc                                 # DVC installation directory
   │       .gitignore
   │       config
@@ -27,7 +27,7 @@ The `mnist_train.csv` file contains training examples and labels. The `mnist_tes
   ├───data                                 # data files using dvc
   │   ├───test                             # test dataset
   │   │       .gitignore
-  │   │       mnist_test.csv.dvc          
+  │   │       mnist_test.csv.dvc
   │   └───train                            # train dataset
   │           .gitignore
   │           mnist_train.csv.dvc
@@ -35,10 +35,10 @@ The `mnist_train.csv` file contains training examples and labels. The `mnist_tes
   │   │   infer.py                         # script .py to predict the model
   │   │   train.py                         # script .py to train and save the model
   │   ├───datasets                         # files for working with datasets
-  │   │       dataset.py                   # module to load the dataset 
-  │   ├───models                           # model files                  
-  │   │       model.py                     
-  │   └───utils                            # utilities 
+  │   │       dataset.py                   # module to load the dataset
+  │   ├───models                           # model files
+  │   │       model.py
+  │   └───utils                            # utilities
   │           utils.py                     # different utils functions
   ├─── .dvcignore                          # marks which files and/or directories should be excluded when traversing a DVC project.
   ├─── .gitignore                          # marks Git which files and/or directories to ignore when committing your project to the GitHub repository

@@ -16,8 +16,7 @@ from mnist.utils.utils import calculate_metrics, get_data_dvc
 def main(cfg: DictConfig) -> None:
     model_path = cfg.model.model_path + ".onnx"
     if not Path(model_path).exists():
-        print()
-        print("File .onnx will be downloaded from the DVC")
+        print("\nFile .onnx will be downloaded from the DVC")
         print("In other case: you need to run train.py and restart run_server.py")
         get_data_dvc(model_path)
         get_data_dvc(cfg.data.logs_path)

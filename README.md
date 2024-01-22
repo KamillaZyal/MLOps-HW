@@ -60,7 +60,7 @@ mlflow server --host 127.0.0.1 --port 5000
   ├─── .gitignore                          # marks Git which files and/or directories to ignore when committing your project to the GitHub repository
   ├─── run_model.bat                       # file .bat for run model (training+inference)
   ├─── run_server.bat                      # file .bat for run mlflow server
-  ├─── infer.py                            # run mlflow server using python
+  ├─── run_server.py                       # run mlflow server using python
   ├─── train.py                            # run training model using python
   ├─── infer.py                            # run inference model using python
   ├─── .pre-commit-config.yaml             # identifying simple issues before submission to code review

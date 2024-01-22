@@ -6,6 +6,9 @@ data:
   exp_data_path: data/examples/mnist_examples.csv
   logs_path: logs/
 
+triton_server:
+  model_onnx_path: triton_backend/model_repository/mnist-onnx/1/model.onnx
+  server_url: "localhost:8500"
 
 model:
   model_path: mnist/models/model
@@ -43,7 +46,7 @@ artifacts:
         every_n_train_steps:
         every_n_epochs: 1
     mlflow:
-        tracking_uri:  'http://localhost:5000'
+        tracking_uri:  "http://localhost:5000"
         save_path: "file:./logs/mlflow-logs"
 
 callbacks:

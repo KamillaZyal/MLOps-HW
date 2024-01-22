@@ -1,0 +1,27 @@
+name: "mnist-onnx"
+platform: "onnxruntime_onnx"
+
+
+
+input [
+    {
+        name: "inputs"
+        data_type: TYPE_FP32
+        dims: [1,1,28,28]
+    }
+]
+
+output [
+    {
+        name: "predictions"
+        data_type: TYPE_FP32
+        dims: [ 1,10 ]
+    }
+]
+instance_group [
+    {
+        count: 1
+        kind: KIND_CPU
+    }
+]
+dynamic_batching: { max_queue_delay_microseconds: 50 }

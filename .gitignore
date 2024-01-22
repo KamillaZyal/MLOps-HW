@@ -8,6 +8,7 @@ poetry.lock
 # Program results
 /mnist/models/model.pth
 /data/prediction.csv
+/data/prediction_onnx.csv
 /lightning_logs
 /outputs
 /.venv
@@ -21,3 +22,7 @@ poetry.lock
 /Lib
 pyvenv.cfg
 /include
+/triton_backend/model_repository/mnist-onnx/1/model.onnx
+/triton_backend/assets
+LICENSE.txt
+/triton_backend/outputs

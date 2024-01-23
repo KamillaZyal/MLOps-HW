@@ -10,14 +10,14 @@ _Используется бекенд ONNX(CPU) см. tag [`hw2`](https://githu
 |Параметр|Значение|
 |-|-|
 OS | Windows 10 v.Домашняя + WSL2
-CPU | Intel(R) Core(TM) i7-8550U CPU 
+CPU | Intel(R) Core(TM) i7-8550U CPU
 vCPU | 8
 RAM | 8 ГБ
 
 ## Описание стуктуры model_repository
 
 ```
-model_repository/            
+model_repository/
 └── mnist-onnx               # директория для данных модели mnist-onnx
     ├── 1                    # версия
     └── config.pbtxt         # конфигурация модели

@@ -1,5 +1,5 @@
 # Отчет: оптимизация параметров конфигурации для Triton Server
-_Используется бекенд ONNX(CPU) см. tag `hw2`_
+_Используется бекенд ONNX(CPU) см. tag [`hw2`](https://github.com/KamillaZyal/MLOps-HW/tree/hw2)_
 
 ## Описание решаемой задачи
 
@@ -49,7 +49,7 @@ Concurrency: 6, throughput: 551.338 infer/sec, latency 10882 usec
 Concurrency: 7, throughput: 549.609 infer/sec, latency 12727 usec
 Concurrency: 8, throughput: 554.95 infer/sec, latency 14400 usec
 ```
-#### Оценка параметра instance_groups
+### Оценка параметра instance_groups
 
 **Оценим влияние количества vCPU, варируя параметр `count`**
 
@@ -106,10 +106,11 @@ Concurrency: 7, throughput: 2180.04 infer/sec, latency 3209 usec
 Concurrency: 8, throughput: 2184.33 infer/sec, latency 3661 usec
 ```
 
-**Выводы**
+ #### **Выводы**
+
 При `count: 1` для *instance_groups* были зафиксированы наилучшие значения показателей (`troughput` наибольшее, а `latency` наименьшее).
 
-#### Delayed Batching
+### Delayed Batching
 **При экспорте было задано, что модель .onnx обрабатывает данные size = [1, 1, 28, 28] -> параметр max_batch_size не анализируем.**
 **Оценим влияние параметра времени задержки запроса, варируя `max_queue_delay_microseconds` (максимальное время задержки запроса в микросекунд).**
 
@@ -155,7 +156,20 @@ Concurrency: 7, throughput: 2226.57 infer/sec, latency 3142 usec
 Concurrency: 8, throughput: 2296.77 infer/sec, latency 3480 usec
 ```
 
-Результаты для `max_queue_delay_microseconds: 40`. Присуствует Warnings.
-
-**Выводы**
+Результаты для `max_queue_delay_microseconds: 40`. Присуствуют Warnings.
+```
+[WARNING] Perf Analyzer is not able to keep up with the desired load. The results may not be accurate.
+Request concurrency: 8
+Failed to obtain stable measurement within 10 measurement windows for concurrency 8. Please try to increase the --measurement-interval.
+Inferences/Second vs. Client Average Batch Latency
+Concurrency: 1, throughput: 1095.44 infer/sec, latency 911 usec
+Concurrency: 2, throughput: 1835.88 infer/sec, latency 1088 usec
+Concurrency: 3, throughput: 1873.46 infer/sec, latency 1599 usec
+Concurrency: 4, throughput: 1915.4 infer/sec, latency 2086 usec
+Concurrency: 5, throughput: 1870.3 infer/sec, latency 2672 usec
+Concurrency: 6, throughput: 1922.37 infer/sec, latency 3119 usec
+Concurrency: 7, throughput: 1904.29 infer/sec, latency 3674 usec
+Concurrency: 8, throughput: 1904.29 infer/sec, latency 3674 usec
+```
+#### **Выводы**
 При `max_queue_delay_microseconds: 50` для *dynamic_batching* были зафиксированы наилучшие значения показателей (`troughput` наибольшее, а `latency` наименьшее).

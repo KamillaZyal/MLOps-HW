@@ -4,7 +4,7 @@ Homework for the MLOps course
 - for HW №1 use tag `hw1`
 - for HW №2 use tag `hw2`
 - for HW №3 use tag `hw3`
-**Report on on optimizing the Triton server config find in `report_triton.md`**
+**Report on on optimizing the Triton server config find in [`report_triton.md`](https://github.com/KamillaZyal/MLOps-HW/blob/main/report_triton.md)**
 
 # 📚 Project description
 This project uses [pytorch-lightning](https://lightning.ai/) to do digit recognition on the MNIST dataset.
